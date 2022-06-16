@@ -1,24 +1,32 @@
 import sys
 sys.stdin = open('input.txt', 'r')
 
+import heapq
+
 N = int(sys.stdin.readline())
-nums = []
+
+leftHeap = []
+rightHeap = []
+answer = []
 
 for i in range(N):
-    tmp = int(sys.stdin.readline())
+    inputNum = int(sys.stdin.readline())
 
-    if i == 0:
-        nums.append(tmp)
-        print(nums[0])
-        continue
-
-    for j in range(i):
-        if j == i - 1 or nums[j] >= tmp:
-            nums.insert(j, tmp)
-            break
-
-    center = int(i / 2)
-    if (i + 1) % 2 == 1:
-        print(nums[center])
+    if len(leftHeap) == len(rightHeap):
+        heapq.heappush(leftHeap, (-inputNum, inputNum))
     else:
-        print(min(nums[center], nums[center + 1]))
+        heapq.heappush(rightHeap, (inputNum, inputNum))
+
+    if rightHeap and leftHeap[0][1] > rightHeap[0][0]:
+        smallNum = heapq.heappop(rightHeap)[0]
+        largeNum = heapq.heappop(leftHeap)[1]
+
+        heapq.heappush(leftHeap, (-smallNum, smallNum))
+        heapq.heappush(rightHeap, (largeNum, largeNum))
+
+    # print(-leftHeap[0])
+
+    answer.append(leftHeap[0][1])
+
+for j in answer:
+    print(j)
