@@ -28,7 +28,7 @@ def calculate(n):
                     new_queue.append(oper)
                     idx += 1
                 else:
-                    num1 = new_queue.popleft()
+                    num1 = new_queue.pop()
                     oper = queue.popleft()
                     num2 = queue.popleft()
                     num3 = pre_cal(num1, oper, num2)
