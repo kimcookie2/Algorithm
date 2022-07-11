@@ -11,8 +11,9 @@ def pre_cal(num1, operator, num2):
         return num1 * num2
 
 def calculate(n):
+    global result
+
     if n == M:
-        print(checked)
         queue = deque(mathLine)
         new_queue = deque([])
         idx = 0
@@ -22,7 +23,7 @@ def calculate(n):
                 new_queue.append(num)
                 idx += 1
             else:
-                m = (n - 1) // 2
+                m = (idx - 1) // 2
                 if checked[m] == 0:
                     oper = queue.popleft()
                     new_queue.append(oper)
@@ -35,7 +36,15 @@ def calculate(n):
                     new_queue.append(num3)
                     idx += 2
 
-        print(new_queue)
+        while len(new_queue) != 1:
+            num1 = new_queue.popleft()
+            oper = new_queue.popleft()
+            num2 = new_queue.popleft()
+            num3 = pre_cal(num1, oper, num2)
+            new_queue.appendleft(num3)
+
+        if new_queue[0] > result:
+            result = new_queue[0]
         return
 
     if checked[n - 1] == 0:
@@ -47,6 +56,7 @@ def calculate(n):
 N = int(input())
 inputLine = input()
 mathLine = [0] * N
+result = -1 * 2 ** 32 - 1
 
 for i in range(N):
     if i % 2 == 0:
@@ -58,3 +68,5 @@ M = N // 2
 checked = [0] * M
 
 calculate(0)
+
+print(result)
